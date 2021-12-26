@@ -1,0 +1,12 @@
+<mat-drawer-container class="container" autosize>
+  <mat-drawer class="sidenav-menu" #sidenav mode="side" [(opened)]="menu_opened">Sidenav content</mat-drawer>
+
+  <div class="main-content">
+    Main content
+    <div class="menu-button">
+      <button mat-fab color="primary" (click)="sidenav.toggle()">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-drawer-container>
