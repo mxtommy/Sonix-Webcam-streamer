@@ -600,6 +600,7 @@
 
 		// Private event handler: this will trigger plugin callbacks, if set
 		function handleEvent(json, skipTimeout) {
+			console.log(json);
 			retries = 0;
 			if(!websockets && sessionId !== undefined && sessionId !== null && skipTimeout !== true)
 				eventHandler();
