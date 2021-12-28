@@ -1,5 +1,7 @@
 import subprocess
 import re
+from time import sleep
+
 from websocket_server import handler_registry
 
 device = '/dev/video2'
@@ -7,6 +9,7 @@ device = '/dev/video2'
 
 def initialize():
     handler_registry.register('get_feed_options', get_feed_options_supported)
+    handler_registry.register('set_resolution_fps', update_feed_resolution_fps)
     initial_feed_setup("320x240","30.000")    
 
     
@@ -79,6 +82,15 @@ def get_feed_options_supported(message):
 
                 
     return parsed
+
+
+def update_feed_resolution_fps(message):
+    new_resolution = message.get('resolution', '320x240')
+    new_fps = message.get('fps', '30')
+    kill_ffmpeg()
+    sleep(2)
+    run_ffmpeg_h264(new_resolution,new_fps)
+    #run_ffmpeg_audio(audio_card_id)
 
 
 def initial_feed_setup(size,fps):
