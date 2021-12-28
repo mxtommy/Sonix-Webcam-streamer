@@ -1,2 +1,2 @@
 #!/bin/bash
-apt-get install -y ffmpeg
+apt-get install -y ffmpeg janus 

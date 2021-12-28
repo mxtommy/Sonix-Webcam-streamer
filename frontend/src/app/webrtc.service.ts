@@ -14,8 +14,8 @@ export class WebrtcService {
   videoStreamSize: BehaviorSubject<string|null> = new BehaviorSubject<string|null>(null);
   videoBitrate: BehaviorSubject<string|null> = new BehaviorSubject<string|null>(null);
 
-  //server = "http://" + window.location.hostname + ":8088/janus";
-  server = "http://192.168.1.122:8088/janus";
+  server = "http://" + window.location.hostname + ":8088/janus";
+  //server = "http://192.168.1.122:8088/janus";
   opaqueId = "streamingtest-"+Janus.randomString(12);
   janus:any = null;
   streaming: any = null;

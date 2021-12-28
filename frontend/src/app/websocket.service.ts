@@ -44,8 +44,8 @@ export class WebsocketService {
       return;
     }
 
-    //this.webSocket = new WebSocket("ws://" + location.hostname + ":8001");
-    this.webSocket = new WebSocket("ws://192.168.1.122:8001");
+    this.webSocket = new WebSocket("ws://" + location.hostname + ":8001");
+    //this.webSocket = new WebSocket("ws://192.168.1.122:8001");
     this.webSocket.onopen = (event) => {
       console.log("Websocket connected!");
       this.websocketStatus.next(true);

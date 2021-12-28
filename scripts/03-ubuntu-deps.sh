@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# only for Ubuntu!
+
 apt-get install libssl-dev
 
 # Install libsrtp
