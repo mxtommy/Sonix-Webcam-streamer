@@ -1,0 +1,22 @@
+<div class="label-container">
+  <label class="">BitRate</label>
+  <label class="value-label">{{bitrate}}</label>
+</div>
+
+<mat-slider
+class="slider-control"
+[max]="6000"
+[min]="100"
+[step]="50"
+thumbLabel
+[(ngModel)]="bitrate"
+(change)="updateBitrate()">
+</mat-slider>
+
+<mat-divider></mat-divider>
+
+<div class="label-container">
+    <label class="">Resolution</label>
+    <label class="value-label">{{bitrate}}</label>
+</div>
+

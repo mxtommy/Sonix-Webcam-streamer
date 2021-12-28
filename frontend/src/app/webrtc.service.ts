@@ -11,8 +11,11 @@ export class WebrtcService {
 
   webrtcStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   webrtcStatusString: BehaviorSubject<string> = new BehaviorSubject<string>("Init");
+  videoStreamSize: BehaviorSubject<string|null> = new BehaviorSubject<string|null>(null);
+  videoBitrate: BehaviorSubject<string|null> = new BehaviorSubject<string|null>(null);
 
-  server = "http://" + window.location.hostname + ":8088/janus";
+  //server = "http://" + window.location.hostname + ":8088/janus";
+  server = "http://192.168.1.122:8088/janus";
   opaqueId = "streamingtest-"+Janus.randomString(12);
   janus:any = null;
   streaming: any = null;
@@ -40,7 +43,6 @@ export class WebrtcService {
             plugin: "janus.plugin.streaming",
             opaqueId: this.opaqueId,
             success: (pluginHandle: any) => {
-                this.webrtcStatus.next(true);
                 this.streaming = pluginHandle;
                 console.log("Plugin attached! (" + this.streaming.getPlugin() + ", id=" + this.streaming.getId() + ")");
                 this.updateStreamsList();
@@ -53,8 +55,9 @@ export class WebrtcService {
             iceState: (state: any) => {
                 console.log("ICE state changed to " + state);
             },
-            webrtcState: (on: any) => {
-                console.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
+            webrtcState: (on: boolean) => {
+              this.webrtcStatus.next(on);
+              console.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
             },
             onmessage: (msg:any, jsep:any) => {
                 Janus.debug(" ::: Got a message :::", msg);
@@ -122,10 +125,10 @@ export class WebrtcService {
                         });
                 }
             },
-            onremotestream: function(stream: any) {
+            onremotestream: (stream: any) => {
                 Janus.debug(" ::: Got a remote stream :::", stream);
-                let videoContainer = document.getElementById("remotevideo");
-
+                let videoContainer = <HTMLVideoElement>document.getElementById("remotevideo");
+                if (videoContainer === null) { return }
 
                 /*
                 var addButtons = false;
@@ -158,9 +161,24 @@ export class WebrtcService {
                     });
                 } */
                 Janus.attachMediaStream(videoContainer, stream);
+
+                videoContainer.play();
                 //videoContainer.volume = 0;
                 //$("#remotevideo").get(0).play();
-                //var videoTracks = stream.getVideoTracks();
+                var videoTracks = stream.getVideoTracks();
+                
+                this.bitrateTimer = window.setInterval(() => {
+                  let videoContainer = <HTMLVideoElement>document.getElementById("remotevideo");
+                  if (videoContainer === null) { return }
+                  // Display updated bitrate, if supported
+                  var bitrate = this.streaming.getBitrate();
+                  this.videoBitrate.next(bitrate);
+
+                  // Check if the resolution changed too
+                  this.videoStreamSize.next(`${videoContainer.videoWidth}x${videoContainer.videoHeight}`)
+
+                  
+              }, 1000);
 
                 /*
                 if(!videoTracks || videoTracks.length === 0) {
@@ -309,6 +327,14 @@ export class WebrtcService {
 
   getWebRTCStatusString(): Observable<string> {
     return this.webrtcStatusString.asObservable();
+  }
+
+  getVideoStreamSize(): Observable<string|null> {
+    return this.videoStreamSize.asObservable();
+  }
+
+  getBitrate(): Observable<string|null> {
+    return this.videoBitrate.asObservable();
   }
 
 }

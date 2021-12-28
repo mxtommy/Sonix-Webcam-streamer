@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { WebsocketService } from './websocket.service';
@@ -9,17 +9,20 @@ import { WebrtcService } from './webrtc.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   menu_opened: boolean = true;
   websocketStatus: boolean = false;
   webrtcStatus: boolean = false;
+  videoSizeText: string|null = null;
+  bitrate: string|null = null;
   wsColor: string = "red";
   rtcColor: string = "red";
 
   constructor(
     private WebsocketService: WebsocketService,
-    private WebrtcService: WebrtcService
+    private WebrtcService: WebrtcService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -36,6 +39,21 @@ export class AppComponent {
         if (status) { this.rtcColor = "green"} else {this.rtcColor = "red"}
        }
     );
+
+    this.WebrtcService.getVideoStreamSize().subscribe(
+      size => {
+        this.videoSizeText = size;
+        this.ChangeDetectorRef.detectChanges();
+      }
+    );
+
+    this.WebrtcService.getBitrate().subscribe(
+      bitrate => {
+        this.bitrate = bitrate;
+        this.ChangeDetectorRef.detectChanges();
+      }
+    )
+
   }
 
 

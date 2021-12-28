@@ -1,5 +1,7 @@
 <mat-drawer-container class="container" autosize>
-  <mat-drawer class="sidenav-menu" #sidenav mode="side" [(opened)]="menu_opened">Sidenav content</mat-drawer>
+  <mat-drawer class="sidenav-menu" #sidenav mode="side" [(opened)]="menu_opened">
+    <app-side-menu></app-side-menu>
+  </mat-drawer>
 
   <div class="main-content">
     
@@ -7,11 +9,15 @@
       <button mat-mini-fab [style.background]="wsColor">WS</button>
       <button mat-mini-fab [style.background]="rtcColor">RTC</button>
     </div>
+    <mat-chip-list class="video-menu">
+      <mat-chip>{{ videoSizeText }}</mat-chip>
+      <mat-chip>{{ bitrate }}</mat-chip>
+    </mat-chip-list>
     <div class="menu-button">
       <button mat-fab color="primary" (click)="sidenav.toggle()">
         <mat-icon>filter_list</mat-icon>
       </button>
     </div>
-    <video class="rounded centered hide" id="remotevideo" width="100%" height="100%" playsinline></video>
+    <video class="rounded centered hide" id="remotevideo" width="100%" height="100%" playsinline controls></video>
   </div>
 </mat-drawer-container>
