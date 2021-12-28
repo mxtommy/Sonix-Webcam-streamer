@@ -15,8 +15,104 @@ thumbLabel
 
 <mat-divider></mat-divider>
 
-<div class="label-container">
-    <label class="">Resolution</label>
-    <label class="value-label">{{bitrate}}</label>
+<div class="row">
+    <mat-form-field appearance="fill" style="width: 45%">
+        <mat-label>Resolution</mat-label>
+        <mat-select [(ngModel)]="resolution" (change)="updateFPSforRes()">
+            <mat-option *ngFor="let item of feedOptions | keyvalue" [value]="item.key">
+            {{item.key}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 25%">
+        <mat-label>FPS</mat-label>
+        <mat-select [(ngModel)]="fps">
+            <mat-option *ngFor="let fps of availFPS" [value]="fps">
+            {{fps}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" style="width:30%;" (click)="updateResFPS()" >Update</button>
 </div>
+
+
+
+<mat-divider></mat-divider>
+
+<div class="row">
+    <label class="">Exposure Setting:</label>
+
+    <mat-radio-group [(ngModel)]="exposure_auto" (change)="update_v4l2_ctl('exposure_auto', exposure_auto)">
+        <mat-radio-button value="1">Manual</mat-radio-button>
+        <mat-radio-button value="3">Auto</mat-radio-button>
+    </mat-radio-group>
+  
+</div>
+
+<div class="row">
+    <div class="label-container">
+        <label class="">Exposure</label>
+        <label class="value-label">{{exposure_absolute}}</label>
+    </div>
+    <mat-slider
+        class="slider-control"
+        [max]="3000"
+        [min]="10"
+        [step]="1"
+        thumbLabel
+        [(ngModel)]="exposure_absolute"
+        (change)="update_v4l2_ctl('exposure_absolute', exposure_absolute)">
+    </mat-slider>
+</div>
+
+<mat-divider></mat-divider>
+
+<div class="row">
+    <div class="label-container">
+        <label class="">Gain</label>
+        <label class="value-label">{{gain}}</label>
+    </div>
+    <mat-slider
+        class="slider-control"
+        [max]="100"
+        [min]="0"
+        [step]="1"
+        thumbLabel
+        [(ngModel)]="gain"
+        (change)="update_v4l2_ctl('gain', gain)">
+    </mat-slider>
+</div>
+
+
+<mat-divider></mat-divider>
+
+<div class="row">
+
+    <div class="row">
+        <label class="">WhiteBalance Setting:</label>
+    
+        <mat-radio-group [(ngModel)]="white_balance_temperature_auto" (change)="update_v4l2_ctl('white_balance_temperature_auto', white_balance_temperature_auto)">
+            <mat-radio-button value="0">Manual</mat-radio-button>
+            <mat-radio-button value="1">Auto</mat-radio-button>
+        </mat-radio-group>
+      
+    </div>
+
+    <div class="label-container">
+        <label class="">White Temp</label>
+        <label class="value-label">{{white_balance_temperature}}</label>
+    </div>
+    <mat-slider
+        class="slider-control"
+        [max]="6500"
+        [min]="2800"
+        [step]="50"
+        thumbLabel
+        [(ngModel)]="white_balance_temperature"
+        (change)="update_v4l2_ctl('white_balance_temperature', white_balance_temperature)">
+    </mat-slider>
+</div>
+
+
+
 

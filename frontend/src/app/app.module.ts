@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips'; 
 import { MatSliderModule } from '@angular/material/slider'; 
 import { MatDividerModule } from '@angular/material/divider'; 
+import { MatSelectModule } from '@angular/material/select'; 
+import { MatRadioModule } from '@angular/material/radio'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StatsService } from './stats.service';
@@ -31,6 +33,8 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
     MatChipsModule,
     MatSliderModule,
     MatDividerModule,
+    MatSelectModule,
+    MatRadioModule,
     BrowserAnimationsModule
   ],
   providers: [

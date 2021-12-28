@@ -93,4 +93,15 @@ export class WebsocketService {
     return this.feed_options.asObservable();
   }
 
+
+  updateResFPS(new_resolution: string, new_fps: string) {
+    this.webSocket?.send(JSON.stringify({'set_resolution_fps': {'resolution': new_resolution, 'fps':  new_fps}}));
+  }
+
+  updateV4L2Ctrl(control_name: string, value: any) {
+    this.webSocket?.send(JSON.stringify({'set_v4l2_ctrl': {'control_name': control_name, 'value':  value}}));
+
+  }
+
+
 }
