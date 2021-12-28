@@ -9,6 +9,7 @@ import argparse
 import os
 import subprocess
 import re
+from time import sleep
 
 from loader import handler_registry
 
@@ -22,6 +23,7 @@ loop = asyncio.get_event_loop()
 async def ws_handler(websocket, path):
     while(True):
         try:
+            sleep(0.01)
             data = await websocket.recv()
             data = json.loads(data)
 
@@ -43,7 +45,10 @@ async def ws_handler(websocket, path):
 if __name__ == "__main__":
 
     # load message handlers
-    handler_registry.load_handler_modules(['handlers.h264_handler'])
+    handler_registry.load_handler_modules([
+        'handlers.h264_handler',
+        'handlers.sonix_uvc_handler'
+        ])
 
     start_server = websockets.serve(ws_handler, port=8001)
     loop.run_until_complete(start_server)

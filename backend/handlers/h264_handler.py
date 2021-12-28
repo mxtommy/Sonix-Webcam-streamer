@@ -72,9 +72,10 @@ def get_feed_options_supported(message):
             continue
 
         #search for fps
-        match = re.search("Interval: Discrete .* \((.*) fps\)", line)
+        match = re.search("Interval: Discrete .*\((.*)(\.[0-9]+) fps\)", line)
         if match:
-            parsed["feed_options"][current_size].append(match.group(1))
+            if match.group(1) not in parsed["feed_options"][current_size]:
+                parsed["feed_options"][current_size].append(match.group(1))
 
                 
     return parsed
